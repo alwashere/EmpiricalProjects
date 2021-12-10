@@ -1,0 +1,323 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/alwashere/Documents/School Work/University of Maryland/MS Applied Economics/2021 3Q Summer/ECON 644 Analysis II/Empirical Project I/econ644-gravity-model/gravityAnalysis.txt
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 7 Jul 2021, 15:39:35
+{txt}
+{com}. use "Data/gravityModelData.dta", clear
+{txt}
+{com}. describe
+
+{txt}Contains data from {res}Data/gravityModelData.dta
+{txt} Observations:{res}           219                  
+{txt}    Variables:{res}            13                  4 Jul 2021 18:29
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:countryName    }{txt}{bind: str32   }{bind:{txt}%32s      }{space 1}{bind:         }{bind:  }{res}{res}countryName{p_end}
+{p 0 48}{bind:iso3Code       }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}ISO-3 Character Country Code{p_end}
+{p 0 48}{bind:overSeasTerr   }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}Country Code of Country this observation is an teritory of{p_end}
+{p 0 48}{bind:distanceKm     }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}distance from USA Capital to Country Capital{p_end}
+{p 0 48}{bind:dup            }{txt}{bind: byte    }{bind:{txt}%12.0g    }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:gdp            }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Country GDP in 2014{p_end}
+{p 0 48}{bind:common_lang    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}=1 if English is the langauge of the country. Otherwise =0{p_end}
+{p 0 48}{bind:usExp          }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Value of US Exports to country in 2014{p_end}
+{p 0 48}{bind:ldist          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}ln(distanceKm){p_end}
+{p 0 48}{bind:lUsExp         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}ln(usExp){p_end}
+{p 0 48}{bind:lGdp           }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}ln(gdp){p_end}
+{p 0 48}{bind:tradeAgreement }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}=1 if USA has bilateral trade agreement, JOR & CHL only. =0 otherwise{p_end}
+{p 0 48}{bind:sharedBorder   }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Trading partner shares a land or small Water border with USA{p_end}
+{txt}{hline}
+Sorted by: 
+
+{com}. {txt}
+{com}. summarize usExp gdp distanceKm
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}usExp {c |}{res}        219    7.41e+09    2.92e+10       4364   3.12e+11
+{txt}{space 9}gdp {c |}{res}        190    3.20e+11    9.88e+11   1.17e+08   1.05e+13
+{txt}{space 2}distanceKm {c |}{res}        209    8718.804    3701.592    733.894   16834.42
+{txt}
+{com}. tab common_lang
+
+      {txt}=1 if {c |}
+ English is {c |}
+        the {c |}
+langauge of {c |}
+        the {c |}
+   country. {c |}
+  Otherwise {c |}
+         =0 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        182       83.11       83.11
+{txt}          1 {c |}{res}         37       16.89      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}        219      100.00
+{txt}
+{com}. {txt}
+     {c TLC}{hline 32}{c -}{hline 10}{c -}{hline 11}{c TRC}
+     {c |} {res}                   countryName   iso3Code       usExp {txt}{c |}
+     {c LT}{hline 32}{c -}{hline 10}{c -}{hline 11}{c RT}
+  6. {c |} {res}                      Anguilla        AIA    63206326 {txt}{c |}
+ 10. {c |} {res}                         Aruba        ABW   1.340e+09 {txt}{c |}
+ 22. {c |} {res}                       Bermuda        BMU   6.452e+08 {txt}{c |}
+ 28. {c |} {res}British Indian Ocean Territory        IOT     2099098 {txt}{c |}
+ 29. {c |} {res}        British Virgin Islands        VGB   3.868e+08 {txt}{c |}
+     {c LT}{hline 32}{c -}{hline 10}{c -}{hline 11}{c RT}
+ 40. {c |} {res}                Cayman Islands        CYM   8.108e+08 {txt}{c |}
+ 45. {c |} {res}              Christmas Island        CXR      727849 {txt}{c |}
+ 46. {c |} {res}       Cocos (Keeling) Islands        CCK     6040796 {txt}{c |}
+ 50. {c |} {res}                  Cook Islands        COK     5486093 {txt}{c |}
+ 54. {c |} {res}                       Curacao        CUW   6.127e+08 {txt}{c |}
+     {c LT}{hline 32}{c -}{hline 10}{c -}{hline 11}{c RT}
+ 66. {c |} {res}                       Eritrea        ERI     5327596 {txt}{c |}
+ 69. {c |} {res}   Falkland Islands (Malvinas)        FLK     7845600 {txt}{c |}
+ 74. {c |} {res}                 French Guiana        GUF   2.771e+08 {txt}{c |}
+ 75. {c |} {res}              French Polynesia        PYF   1.295e+08 {txt}{c |}
+ 81. {c |} {res}                     Gibraltar        GIB   2.688e+09 {txt}{c |}
+     {c LT}{hline 32}{c -}{hline 10}{c -}{hline 11}{c RT}
+ 85. {c |} {res}                    Guadeloupe        GLP   4.291e+08 {txt}{c |}
+128. {c |} {res}                    Martinique        MYQ   2.976e+08 {txt}{c |}
+134. {c |} {res}                        Monaco        MCO   1.293e+08 {txt}{c |}
+137. {c |} {res}                    Montserrat        MSR     9178929 {txt}{c |}
+144. {c |} {res}                 New Caledonia        NCL   1.213e+08 {txt}{c |}
+     {c LT}{hline 32}{c -}{hline 10}{c -}{hline 11}{c RT}
+149. {c |} {res}                          Niue        NIU      111564 {txt}{c |}
+162. {c |} {res}                       Reunion        REU    11066584 {txt}{c |}
+166. {c |} {res}                  Saint Helena        SHN      489827 {txt}{c |}
+169. {c |} {res}     Saint Pierre and Miquelon        SPM        4364 {txt}{c |}
+194. {c |} {res}          Syrian Arab Republic        SYR     6794271 {txt}{c |}
+     {c LT}{hline 32}{c -}{hline 10}{c -}{hline 11}{c RT}
+195. {c |} {res}                        Taiwan        TWN   2.684e+10 {txt}{c |}
+205. {c |} {res}      Turks and Caicos Islands        TCA   2.820e+08 {txt}{c |}
+213. {c |} {res}                  Vatican City        VAT     2573365 {txt}{c |}
+216. {c |} {res}             Wallis and Futuna        WLF      370242 {txt}{c |}
+     {c BLC}{hline 32}{c -}{hline 10}{c -}{hline 11}{c BRC}
+(obs=190)
+
+             {c |}   lUsExp     lGdp
+{hline 13}{c +}{hline 18}
+      lUsExp {c |}{res}   1.0000
+        {txt}lGdp {c |}{res}   0.8474   1.0000
+
+{txt}
+{com}. twoway (scatter lUsExp lGdp) (lfit lUsExp lGdp), ///
+>     ytitle("ln(US Exports)") ///
+>     xtitle("ln(Trading Partner GDP)") ///
+>     title("Value of US Exports and Trading Partner GDP" "2014") ///
+>     caption("Correlation: 0.8474" "Number of Observations: 189") ///
+>     legend(off)
+{res}{txt}
+{com}. graph export expsGdpScatter.png, replace
+{res}{txt}file {bf:expsGdpScatter.png} written in PNG format
+
+{com}. {txt}(obs=209)
+
+             {c |}   lUsExp    ldist
+{hline 13}{c +}{hline 18}
+      lUsExp {c |}{res}   1.0000
+       {txt}ldist {c |}{res}  -0.2325   1.0000
+
+{txt}
+{com}. twoway (scatter lUsExp ldist) (lfit lUsExp ldist), ///
+>     ytitle("ln(US Exports)") ///
+>     xtitle("ln(Distance between Capitals (km))") ///
+>     title("Value of US Exports and Distance" "between Trading Partners (km)") ///
+>     caption("Correlation: -0.2325" "Number of Observations: 219") ///
+>     legend(off)
+{res}{txt}
+{com}. graph export expsDistScatter.png, replace
+{res}{txt}file {bf:expsDistScatter.png} written in PNG format
+
+{com}. 
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 2}distanceKm {c |}{res}        209    8718.804    3701.592    733.894   16834.42
+{txt}{space 7}ldist {c |}{res}        209    8.950379    .5524233   6.598365   9.731181
+{txt}
+{com}. histogram distanceKm, frequency ///
+>     title("Number of Trading Partners and Distance" "between Trading Partners (km)") ///
+>     ytitle("Number of Trading Partners")
+{txt}(bin={res}14{txt}, start={res}733.894{txt}, width={res}1150.0378{txt})
+{res}{txt}
+{com}. graph export distanceHist.png, replace
+{res}{txt}file {bf:distanceHist.png} written in PNG format
+
+{com}. {txt}
+{com}. summarize usExp if distance<=4000
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}usExp {c |}{res}         32    2.01e+10    6.80e+10    5486093   3.12e+11
+{txt}
+{com}. summarize usExp if distance>4000
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 7}usExp {c |}{res}        187    5.24e+09    1.39e+10       4364   1.24e+11
+{txt}
+{com}. {txt}
+{com}. regress lUsExp lGdp ldist i.common_lang i.sharedBorder i.common_lang#c.ldist
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       189
+{txt}{hline 13}{c +}{hline 34}   F(5, 183)       = {res}   132.21
+{txt}       Model {c |} {res} 1036.27008         5  207.254016   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res}  286.87078       183  1.56759989   {txt}R-squared       ={res}    0.7832
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.7773
+{txt}       Total {c |} {res} 1323.14086       188   7.0379833   {txt}Root MSE        =   {res}  1.252
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      lUsExp{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}lGdp {c |}{col 14}{res}{space 2}  .960062{col 26}{space 2} .0397942{col 37}{space 1}   24.13{col 46}{space 3}0.000{col 54}{space 4} .8815475{col 67}{space 3} 1.038577
+{txt}{space 7}ldist {c |}{col 14}{res}{space 2}-1.210787{col 26}{space 2} .2231876{col 37}{space 1}   -5.42{col 46}{space 3}0.000{col 54}{space 4}-1.651138{col 67}{space 3}-.7704346
+{txt}1.common_l~g {c |}{col 14}{res}{space 2} 1.328913{col 26}{space 2} 3.434492{col 37}{space 1}    0.39{col 46}{space 3}0.699{col 54}{space 4}-5.447381{col 67}{space 3} 8.105207
+{txt}1.sharedBo~r {c |}{col 14}{res}{space 2} .2862585{col 26}{space 2} .9996706{col 37}{space 1}    0.29{col 46}{space 3}0.775{col 54}{space 4}-1.686104{col 67}{space 3} 2.258621
+{txt}{space 12} {c |}
+{space 1}common_lang#{c |}
+{space 5}c.ldist {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}-.0902423{col 26}{space 2} .3809828{col 37}{space 1}   -0.24{col 46}{space 3}0.813{col 54}{space 4}-.8419258{col 67}{space 3} .6614413
+{txt}{space 12} {c |}
+{space 7}_cons {c |}{col 14}{res}{space 2} 7.591634{col 26}{space 2} 2.208639{col 37}{space 1}    3.44{col 46}{space 3}0.001{col 54}{space 4} 3.233963{col 67}{space 3}  11.9493
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. outreg using empPrj1.doc, se replace
+{res}
+{txt}{center:{hline 36}}
+{center:{txt}{lalign 23:}{txt}{center 11:lUsExp}}
+{txt}{center:{hline 36}}
+{center:{txt}{lalign 23:lGdp}{res}{center 11:0.960}}
+{center:{txt}{lalign 23:}{res}{center 11:(0.040)**}}
+{center:{txt}{lalign 23:ldist}{res}{center 11:-1.211}}
+{center:{txt}{lalign 23:}{res}{center 11:(0.223)**}}
+{center:{txt}{lalign 23:1.common_lang}{res}{center 11:1.329}}
+{center:{txt}{lalign 23:}{res}{center 11:(3.434)}}
+{center:{txt}{lalign 23:1.sharedBorder}{res}{center 11:0.286}}
+{center:{txt}{lalign 23:}{res}{center 11:(1.000)}}
+{center:{txt}{lalign 23:1.common_lang#c.ldist}{res}{center 11:-0.090}}
+{center:{txt}{lalign 23:}{res}{center 11:(0.381)}}
+{center:{txt}{lalign 23:_cons}{res}{center 11:7.592}}
+{center:{txt}{lalign 23:}{res}{center 11:(2.209)**}}
+{center:{txt}{lalign 23:R2}{res}{center 11:0.78}}
+{center:{txt}{lalign 23:N}{res}{center 11:189}}
+{txt}{center:{hline 36}}
+{txt}{center:* p<0.05; ** p<0.01}
+
+
+{com}. 
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}1.common_lang = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} 1.sharedBorder = 0{p_end}
+{p 0 7}{space 1}{text:( 3)}{space 1} 1.common_lang#c.ldist = 0{p_end}
+
+{txt}       F(  3,   183) ={res}    1.66
+{txt}{col 13}Prob > F ={res}    0.1770
+{txt}
+{com}. regress lUsExp lGdp ldist
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       189
+{txt}{hline 13}{c +}{hline 34}   F(2, 186)       = {res}   324.57
+{txt}       Model {c |} {res} 1028.45738         2  514.228691   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res}  294.68348       186  1.58431978   {txt}R-squared       ={res}    0.7773
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.7749
+{txt}       Total {c |} {res} 1323.14086       188   7.0379833   {txt}Root MSE        =   {res} 1.2587
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      lUsExp{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}lGdp {c |}{col 14}{res}{space 2} .9572798{col 26}{space 2} .0392415{col 37}{space 1}   24.39{col 46}{space 3}0.000{col 54}{space 4} .8798642{col 67}{space 3} 1.034695
+{txt}{space 7}ldist {c |}{col 14}{res}{space 2}-1.266136{col 26}{space 2} .1776172{col 37}{space 1}   -7.13{col 46}{space 3}0.000{col 54}{space 4}-1.616539{col 67}{space 3} -.915733
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 8.249952{col 26}{space 2} 1.867455{col 37}{space 1}    4.42{col 46}{space 3}0.000{col 54}{space 4} 4.565837{col 67}{space 3} 11.93407
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. outreg using empPrj1.doc, se merge replace
+{res}
+{txt}{center:{hline 47}}
+{center:{txt}{lalign 23:}{txt}{center 11:lUsExp}{txt}{center 11:lUsExp}}
+{txt}{center:{hline 47}}
+{center:{txt}{lalign 23:lGdp}{res}{center 11:0.960}{res}{center 11:0.957}}
+{center:{txt}{lalign 23:}{res}{center 11:(0.040)**}{res}{center 11:(0.039)**}}
+{center:{txt}{lalign 23:ldist}{res}{center 11:-1.211}{res}{center 11:-1.266}}
+{center:{txt}{lalign 23:}{res}{center 11:(0.223)**}{res}{center 11:(0.178)**}}
+{center:{txt}{lalign 23:1.common_lang}{res}{center 11:1.329}{res}{center 11:}}
+{center:{txt}{lalign 23:}{res}{center 11:(3.434)}{res}{center 11:}}
+{center:{txt}{lalign 23:1.sharedBorder}{res}{center 11:0.286}{res}{center 11:}}
+{center:{txt}{lalign 23:}{res}{center 11:(1.000)}{res}{center 11:}}
+{center:{txt}{lalign 23:1.common_lang#c.ldist}{res}{center 11:-0.090}{res}{center 11:}}
+{center:{txt}{lalign 23:}{res}{center 11:(0.381)}{res}{center 11:}}
+{center:{txt}{lalign 23:_cons}{res}{center 11:7.592}{res}{center 11:8.250}}
+{center:{txt}{lalign 23:}{res}{center 11:(2.209)**}{res}{center 11:(1.867)**}}
+{center:{txt}{lalign 23:R2}{res}{center 11:0.78}{res}{center 11:0.78}}
+{center:{txt}{lalign 23:N}{res}{center 11:189}{res}{center 11:189}}
+{txt}{center:{hline 47}}
+{txt}{center:* p<0.05; ** p<0.01}
+
+
+{com}. {txt}
+{com}. regress lUsExp c.lGdp c.ldist i.tradeAgreement#c.ldist i.tradeAgreement
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}       189
+{txt}{hline 13}{c +}{hline 34}   F(4, 184)       = {res}   163.88
+{txt}       Model {c |} {res} 1033.14883         4  258.287209   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 289.992027       184  1.57604362   {txt}R-squared       ={res}    0.7808
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.7761
+{txt}       Total {c |} {res} 1323.14086       188   7.0379833   {txt}Root MSE        =   {res} 1.2554
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      lUsExp{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}lGdp {c |}{col 14}{res}{space 2} .9541935{col 26}{space 2} .0392174{col 37}{space 1}   24.33{col 46}{space 3}0.000{col 54}{space 4}   .87682{col 67}{space 3} 1.031567
+{txt}{space 7}ldist {c |}{col 14}{res}{space 2}-1.272374{col 26}{space 2} .1772125{col 37}{space 1}   -7.18{col 46}{space 3}0.000{col 54}{space 4}-1.622004{col 67}{space 3}-.9227443
+{txt}{space 12} {c |}
+tradeAgree~t#{c |}
+{space 5}c.ldist {c |}
+{space 10}1  {c |}{col 14}{res}{space 2}  .074376{col 26}{space 2} 10.69381{col 37}{space 1}    0.01{col 46}{space 3}0.994{col 54}{space 4}-21.02387{col 67}{space 3} 21.17262
+{txt}{space 12} {c |}
+1.tradeAgr~t {c |}{col 14}{res}{space 2} .8663012{col 26}{space 2} 97.10709{col 37}{space 1}    0.01{col 46}{space 3}0.993{col 54}{space 4}-190.7202{col 67}{space 3} 192.4528
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 8.364545{col 26}{space 2} 1.863824{col 37}{space 1}    4.49{col 46}{space 3}0.000{col 54}{space 4} 4.687332{col 67}{space 3} 12.04176
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. outreg using empPrj1.doc, se merge replace
+{res}
+{txt}{center:{hline 61}}
+{center:{txt}{lalign 26:}{txt}{center 11:lUsExp}{txt}{center 11:lUsExp}{txt}{center 11:lUsExp}}
+{txt}{center:{hline 61}}
+{center:{txt}{lalign 26:lGdp}{res}{center 11:0.960}{res}{center 11:0.957}{res}{center 11:0.954}}
+{center:{txt}{lalign 26:}{res}{center 11:(0.040)**}{res}{center 11:(0.039)**}{res}{center 11:(0.039)**}}
+{center:{txt}{lalign 26:ldist}{res}{center 11:-1.211}{res}{center 11:-1.266}{res}{center 11:-1.272}}
+{center:{txt}{lalign 26:}{res}{center 11:(0.223)**}{res}{center 11:(0.178)**}{res}{center 11:(0.177)**}}
+{center:{txt}{lalign 26:1.common_lang}{res}{center 11:1.329}{res}{center 11:}{res}{center 11:}}
+{center:{txt}{lalign 26:}{res}{center 11:(3.434)}{res}{center 11:}{res}{center 11:}}
+{center:{txt}{lalign 26:1.sharedBorder}{res}{center 11:0.286}{res}{center 11:}{res}{center 11:}}
+{center:{txt}{lalign 26:}{res}{center 11:(1.000)}{res}{center 11:}{res}{center 11:}}
+{center:{txt}{lalign 26:1.common_lang#c.ldist}{res}{center 11:-0.090}{res}{center 11:}{res}{center 11:}}
+{center:{txt}{lalign 26:}{res}{center 11:(0.381)}{res}{center 11:}{res}{center 11:}}
+{center:{txt}{lalign 26:1.tradeAgreement#c.ldist}{res}{center 11:}{res}{center 11:}{res}{center 11:0.074}}
+{center:{txt}{lalign 26:}{res}{center 11:}{res}{center 11:}{res}{center 11:(10.694)}}
+{center:{txt}{lalign 26:1.tradeAgreement}{res}{center 11:}{res}{center 11:}{res}{center 11:0.866}}
+{center:{txt}{lalign 26:}{res}{center 11:}{res}{center 11:}{res}{center 11:(97.107)}}
+{center:{txt}{lalign 26:_cons}{res}{center 11:7.592}{res}{center 11:8.250}{res}{center 11:8.365}}
+{center:{txt}{lalign 26:}{res}{center 11:(2.209)**}{res}{center 11:(1.867)**}{res}{center 11:(1.864)**}}
+{center:{txt}{lalign 26:R2}{res}{center 11:0.78}{res}{center 11:0.78}{res}{center 11:0.78}}
+{center:{txt}{lalign 26:N}{res}{center 11:189}{res}{center 11:189}{res}{center 11:189}}
+{txt}{center:{hline 61}}
+{txt}{center:* p<0.05; ** p<0.01}
+
+
+{com}. 
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}1.tradeAgreement = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} 1.tradeAgreement#c.ldist = 0{p_end}
+
+{txt}       F(  2,   184) ={res}    1.49
+{txt}{col 13}Prob > F ={res}    0.2284
+{txt}
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Users/alwashere/Documents/School Work/University of Maryland/MS Applied Economics/2021 3Q Summer/ECON 644 Analysis II/Empirical Project I/econ644-gravity-model/gravityAnalysis.txt
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 7 Jul 2021, 15:39:37
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
